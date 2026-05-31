@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Магнитное поле цилиндрического соленоида</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="visual-section" aria-label="Визуализация магнитного поля">
+        <div class="topbar">
+          <div>
+            <h1>Магнитное поле соленоида</h1>
+            <p>B(x, y) в плоскости, содержащей ось</p>
+          </div>
+          <div class="status-pill" id="sampleStatus">0 витков</div>
+        </div>
+
+        <div class="canvas-panel">
+          <canvas id="fieldCanvas" aria-label="Карта магнитного поля"></canvas>
+          <div class="legend">
+            <span id="legendMin">0</span>
+            <canvas id="legendCanvas" width="220" height="14" aria-hidden="true"></canvas>
+            <span id="legendMax">0</span>
+          </div>
+          <div class="cursor-readout" id="cursorReadout">x = 0, y = 0</div>
+        </div>
+
+        <div class="axis-panel">
+          <div class="panel-heading">
+            <h2>Профиль на оси</h2>
+            <div class="plot-legend">
+              <span class="legend-line numeric"></span>численно
+              <span class="legend-line analytic"></span>аналитика
+            </div>
+          </div>
+          <canvas id="axisCanvas" aria-label="График Bx на оси соленоида"></canvas>
+        </div>
+      </section>
+
+      <aside class="control-panel" aria-label="Параметры модели">
+        <section class="control-group">
+          <h2>Параметры</h2>
+          <label class="control-row">
+            <span>D, м</span>
+            <input id="diameterRange" type="range" min="0.04" max="1.20" step="0.01" value="0.20" />
+            <input id="diameter" type="number" min="0.04" max="1.20" step="0.01" value="0.20" />
+          </label>
+          <label class="control-row">
+            <span>L, м</span>
+            <input id="lengthRange" type="range" min="0.08" max="3.00" step="0.01" value="0.80" />
+            <input id="length" type="number" min="0.08" max="3.00" step="0.01" value="0.80" />
+          </label>
+          <label class="control-row">
+            <span>N</span>
+            <input id="turnsRange" type="range" min="1" max="800" step="1" value="120" />
+            <input id="turns" type="number" min="1" max="800" step="1" value="120" />
+          </label>
+          <label class="control-row">
+            <span>I, А</span>
+            <input id="currentRange" type="range" min="-10.0" max="10.0" step="0.1" value="2.0" />
+            <input id="current" type="number" min="-10.0" max="10.0" step="0.1" value="2.0" />
+          </label>
+        </section>
+
+        <section class="control-group">
+          <h2>Вид</h2>
+          <div class="segmented" role="tablist" aria-label="Компонента поля">
+            <button class="active" type="button" data-view="mag">|B|</button>
+            <button type="button" data-view="bx">Bx</button>
+            <button type="button" data-view="by">By</button>
+          </div>
+          <label class="control-row">
+            <span>область</span>
+            <input id="extentRange" type="range" min="0.70" max="3.50" step="0.05" value="1.40" />
+            <input id="extent" type="number" min="0.70" max="3.50" step="0.05" value="1.40" />
+          </label>
+          <label class="control-row">
+            <span>сетка</span>
+            <input id="resolutionRange" type="range" min="70" max="210" step="10" value="120" />
+            <input id="resolution" type="number" min="70" max="210" step="10" value="120" />
+          </label>
+          <label class="control-row">
+            <span>витки в расчете</span>
+            <input id="samplesRange" type="range" min="8" max="240" step="1" value="90" />
+            <input id="samples" type="number" min="8" max="240" step="1" value="90" />
+          </label>
+        </section>
+
+        <section class="metrics">
+          <h2>Контроль</h2>
+          <div class="metric">
+            <span>Bx(0,0)</span>
+            <strong id="centerField">0</strong>
+          </div>
+          <div class="metric">
+            <span>конечный соленоид</span>
+            <strong id="finiteAxisField">0</strong>
+          </div>
+          <div class="metric">
+            <span>длинный соленоид</span>
+            <strong id="longField">0</strong>
+          </div>
+          <div class="metric">
+            <span>отклонение</span>
+            <strong id="axisError">0%</strong>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
