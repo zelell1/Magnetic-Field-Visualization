@@ -159,6 +159,12 @@ http://localhost:5173
 https://zelell1.github.io/Magnetic-Field-Visualization/
 ```
 
+Репозиторий проекта:
+
+```text
+https://github.com/zelell1/Magnetic-Field-Visualization
+```
+
 ## 7. Проверка корректности
 
 Автоматические тесты проверяют:
