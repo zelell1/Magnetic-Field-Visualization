@@ -20,6 +20,16 @@ test("complete elliptic integrals have the correct m = 0 limit", () => {
   assert.ok(Math.abs(E - Math.PI / 2) < 1e-13);
 });
 
+test("complete elliptic integrals match reference values inside 0 < m < 1", () => {
+  const half = completeEllipticIntegrals(0.5);
+  assert.ok(relativeError(half.K, 1.8540746773013719) < 1e-12);
+  assert.ok(relativeError(half.E, 1.350643881047675) < 1e-12);
+
+  const nearWire = completeEllipticIntegrals(0.9);
+  assert.ok(relativeError(nearWire.K, 2.5780921133481733) < 1e-12);
+  assert.ok(relativeError(nearWire.E, 1.1047747327040733) < 1e-12);
+});
+
 test("single circular loop matches the analytic on-axis expression", () => {
   const radius = 0.13;
   const current = 2.4;
@@ -67,6 +77,25 @@ test("sampled superposition agrees with the continuous on-axis finite-solenoid f
     const numeric = model.fieldAt(x, 0).bx;
     const analytic = axisFiniteSolenoidField(x, options);
     assert.ok(relativeError(numeric, analytic) < 0.006);
+  }
+});
+
+test("grouped loop samples converge below one percent for the default demo case", () => {
+  const options = {
+    diameter: 0.2,
+    length: 0.8,
+    turns: 120,
+    current: 2.0,
+  };
+  const analyticCenter = axisFiniteSolenoidField(0, options);
+
+  const coarse = makeSolenoidModel({ ...options, maxSamples: 8 }).fieldAt(0, 0).bx;
+  assert.ok(relativeError(coarse, analyticCenter) > 0.01);
+
+  for (const maxSamples of [12, 20, 60, 90]) {
+    const model = makeSolenoidModel({ ...options, maxSamples });
+    const numericCenter = model.fieldAt(0, 0).bx;
+    assert.ok(relativeError(numericCenter, analyticCenter) < 0.01);
   }
 });
 
